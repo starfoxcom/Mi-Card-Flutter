@@ -154,48 +154,50 @@ class _MyHomePageState extends State<MyHomePage> {
       backgroundColor: Colors.black87,
       body: SafeArea(
         child: Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const CircleAvatar(
-                  radius: 50,
-                  foregroundImage: AssetImage('images/perfil 1a1.jpeg'),
-                ),
-                const Text(
-                  'Jorge Zamudio',
-                  style: TextStyle(
-                    fontFamily: 'Pacifico',
-                    fontSize: 40,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const CircleAvatar(
+                    radius: 50,
+                    foregroundImage: AssetImage('images/perfil 1a1.jpeg'),
                   ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.all(10),
-                ),
-                const Text(
-                  'FLUTTER DEVELOPER',
-                  style: TextStyle(
-                    fontFamily: 'Source Sans Pro',
-                    fontSize: 20,
-                    color: Colors.white70,
-                    letterSpacing: 2.5,
-                    fontWeight: FontWeight.bold,
+                  const Text(
+                    'Jorge Zamudio',
+                    style: TextStyle(
+                      fontFamily: 'Pacifico',
+                      fontSize: 40,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.all(5),
-                ),
-                const SizedBox(
-                  width: 150,
-                  child: Divider(
-                    color: Colors.white70,
+                  const Padding(
+                    padding: EdgeInsets.all(10),
                   ),
-                ),
-                ..._cardData2,
-              ],
+                  const Text(
+                    'FLUTTER DEVELOPER',
+                    style: TextStyle(
+                      fontFamily: 'Source Sans Pro',
+                      fontSize: 20,
+                      color: Colors.white70,
+                      letterSpacing: 2.5,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.all(5),
+                  ),
+                  const SizedBox(
+                    width: 150,
+                    child: Divider(
+                      color: Colors.white70,
+                    ),
+                  ),
+                  ..._cardData2,
+                ],
+              ),
             ),
           ),
         ),
