@@ -76,78 +76,193 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     final List<Widget> _cardData2 = _cardData.asMap().entries.map((cardData) {
-      return Padding(
-        padding: const EdgeInsets.only(bottom: 10),
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 750),
-          child: InkWell(
-            onTap: () => launch(cardData.value.url),
-            onHover: (value) {
-              setState(() {
-                cardData.value.onHover = value;
-              });
-            },
-            child: AnimatedContainer(
-              decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.all(Radius.circular(10)),
-                  color:
-                      cardData.value.onHover ? Colors.white70 : Colors.black87,
-                  boxShadow: [
-                    BoxShadow(
+      if (size.width > 1150) {
+        return Expanded(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 750),
+              child: InkWell(
+                borderRadius: const BorderRadius.all(Radius.circular(10)),
+                onTap: () => launch(cardData.value.url),
+                onHover: (value) {
+                  setState(() {
+                    cardData.value.onHover = value;
+                  });
+                },
+                child: AnimatedContainer(
+                  decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(10)),
                       color: cardData.value.onHover
-                          ? Colors.black87
-                          : Colors.white30,
-                      spreadRadius: .5,
-                      blurRadius: 0,
-                      offset: const Offset(0, 1),
-                    ),
-                  ]),
-              duration: const Duration(milliseconds: 500),
-              curve: Curves.easeInOut,
-              margin: EdgeInsets.zero,
-              child: ListTile(
-                leading: cardData.value.fontAwesomeIcon
-                    ? FaIcon(
-                        cardData.value.icon,
+                          ? Colors.white70
+                          : Colors.black87,
+                      boxShadow: [
+                        BoxShadow(
+                          color: cardData.value.onHover
+                              ? Colors.black87
+                              : Colors.white30,
+                          spreadRadius: .5,
+                          blurRadius: 0,
+                          offset: const Offset(0, 1),
+                        ),
+                      ]),
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.easeInOut,
+                  margin: EdgeInsets.zero,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Row(children: [
+                      cardData.value.fontAwesomeIcon
+                          ? Padding(
+                              padding: const EdgeInsets.only(right: 10),
+                              child: FaIcon(
+                                cardData.value.icon,
+                                color: cardData.value.onHover
+                                    ? Colors.black87
+                                    : Colors.white70,
+                              ),
+                            )
+                          : Padding(
+                              padding: const EdgeInsets.only(right: 10),
+                              child: Icon(cardData.value.icon,
+                                  color: cardData.value.onHover
+                                      ? Colors.black87
+                                      : Colors.white70),
+                            ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              cardData.value.title,
+                              style: TextStyle(
+                                color: cardData.value.onHover
+                                    ? Colors.black87
+                                    : Colors.white70,
+                                fontFamily: 'Source Sans Pro',
+                                fontSize: 20,
+                              ),
+                            ),
+                            Text(
+                              cardData.value.subtitle,
+                              style: TextStyle(
+                                color: cardData.value.onHover
+                                    ? Colors.black45
+                                    : Colors.white30,
+                                fontFamily: 'Source Sans Pro',
+                                fontSize: 15,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Icon(
+                        Icons.keyboard_arrow_right,
                         color: cardData.value.onHover
                             ? Colors.black87
                             : Colors.white70,
-                      )
-                    : Icon(cardData.value.icon,
-                        color: cardData.value.onHover
-                            ? Colors.black87
-                            : Colors.white70),
-                title: Text(
-                  cardData.value.title,
-                  style: TextStyle(
-                    color: cardData.value.onHover
-                        ? Colors.black87
-                        : Colors.white70,
-                    fontFamily: 'Source Sans Pro',
-                    fontSize: 20,
+                      ),
+                    ]),
                   ),
-                ),
-                subtitle: Text(
-                  cardData.value.subtitle,
-                  style: TextStyle(
-                    color: cardData.value.onHover
-                        ? Colors.black45
-                        : Colors.white30,
-                    fontFamily: 'Source Sans Pro',
-                    fontSize: 15,
-                  ),
-                ),
-                trailing: Icon(
-                  Icons.keyboard_arrow_right,
-                  color:
-                      cardData.value.onHover ? Colors.black87 : Colors.white70,
                 ),
               ),
             ),
           ),
-        ),
-      );
+        );
+      } else {
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 10),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 750),
+            child: InkWell(
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
+              onTap: () => launch(cardData.value.url),
+              onHover: (value) {
+                setState(() {
+                  cardData.value.onHover = value;
+                });
+              },
+              child: AnimatedContainer(
+                decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    color: cardData.value.onHover
+                        ? Colors.white70
+                        : Colors.black87,
+                    boxShadow: [
+                      BoxShadow(
+                        color: cardData.value.onHover
+                            ? Colors.black87
+                            : Colors.white30,
+                        spreadRadius: .5,
+                        blurRadius: 0,
+                        offset: const Offset(0, 1),
+                      ),
+                    ]),
+                duration: const Duration(milliseconds: 500),
+                curve: Curves.easeInOut,
+                margin: EdgeInsets.zero,
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Row(children: [
+                    cardData.value.fontAwesomeIcon
+                        ? Padding(
+                            padding: const EdgeInsets.only(right: 10),
+                            child: FaIcon(
+                              cardData.value.icon,
+                              color: cardData.value.onHover
+                                  ? Colors.black87
+                                  : Colors.white70,
+                            ),
+                          )
+                        : Padding(
+                            padding: const EdgeInsets.only(right: 10),
+                            child: Icon(cardData.value.icon,
+                                color: cardData.value.onHover
+                                    ? Colors.black87
+                                    : Colors.white70),
+                          ),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            cardData.value.title,
+                            style: TextStyle(
+                              color: cardData.value.onHover
+                                  ? Colors.black87
+                                  : Colors.white70,
+                              fontFamily: 'Source Sans Pro',
+                              fontSize: 20,
+                            ),
+                          ),
+                          Text(
+                            cardData.value.subtitle,
+                            style: TextStyle(
+                              color: cardData.value.onHover
+                                  ? Colors.black45
+                                  : Colors.white30,
+                              fontFamily: 'Source Sans Pro',
+                              fontSize: 15,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Icon(
+                      Icons.keyboard_arrow_right,
+                      color: cardData.value.onHover
+                          ? Colors.black87
+                          : Colors.white70,
+                    ),
+                  ]),
+                ),
+              ),
+            ),
+          ),
+        );
+      }
     }).toList();
 
     return Scaffold(
@@ -195,7 +310,22 @@ class _MyHomePageState extends State<MyHomePage> {
                       color: Colors.white70,
                     ),
                   ),
-                  ..._cardData2,
+                  const Padding(
+                    padding: EdgeInsets.all(5),
+                  ),
+                  LayoutBuilder(builder: (context, constraints) {
+                    if (size.width > 1150) {
+                      return Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: _cardData2,
+                      );
+                    } else {
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: _cardData2,
+                      );
+                    }
+                  }),
                 ],
               ),
             ),
