@@ -1,16 +1,9 @@
 # mi_card_flutter
+[![Codemagic build status](https://api.codemagic.io/apps/62709b66a0f288ff408db03d/62709b66a0f288ff408db03c/status_badge.svg)](https://codemagic.io/apps/62709b66a0f288ff408db03d/62709b66a0f288ff408db03c/latest_build)
+[![CodeFactor](https://www.codefactor.io/repository/github/starfoxcom/mi-card-flutter/badge)](https://www.codefactor.io/repository/github/starfoxcom/mi-card-flutter)
 
-A new Flutter project.
+This is an application created to follow up with a Flutter course.
 
-## Getting Started
+[Codemagic static page](https://sf-micard.codemagic.app)
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+It displays a simple app with personal data, as a presentation card app.
