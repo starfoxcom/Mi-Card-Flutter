@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:timelines/timelines.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 void main() {
   runApp(const MyApp());
@@ -53,22 +55,28 @@ class CardData {
 }
 
 class TimelineCardData {
-  String title;
+  String companyPosition;
 
-  String subtitle;
+  String companyName;
 
-  String date;
+  DateTime startDate;
+
+  DateTime? endDate;
 
   IconData icon;
 
   bool fontAwesomeIcon;
 
+  bool isVisible;
+
   TimelineCardData({
-    this.title = '',
-    this.subtitle = '',
-    this.date = '',
+    this.companyPosition = '',
+    this.companyName = '',
+    required this.startDate,
+    this.endDate,
     this.icon = Icons.question_answer,
     this.fontAwesomeIcon = false,
+    this.isVisible = true,
   });
 }
 
@@ -104,16 +112,19 @@ class _MyHomePageState extends State<MyHomePage> {
 
   final _timelineCardData = [
     TimelineCardData(
-      title: 'Software Developer',
-      subtitle: 'C&C Consulting Construction Group',
-      date: 'August 2021 - November 2021',
+      companyPosition: 'Flutter Software Developer',
+      companyName: 'SmarTrader Inc.',
+      startDate: DateTime(2021, 11),
       icon: Icons.work,
+      isVisible: false,
     ),
     TimelineCardData(
-      title: 'Flutter Software Developer',
-      subtitle: 'SmarTrader Inc.',
-      date: 'November 2021 - Present',
+      companyPosition: 'Software Developer',
+      companyName: 'C&C Consulting Construction Group',
+      startDate: DateTime(2021, 08),
+      endDate: DateTime(2021, 11),
       icon: Icons.work,
+      isVisible: false,
     ),
   ];
 
@@ -218,116 +229,141 @@ class _MyHomePageState extends State<MyHomePage> {
 
     final List<Widget> careerHistoryCards =
         _timelineCardData.asMap().entries.map((cardData) {
-      return TimelineTile(
-        node: TimelineNode.simple(
-          color: Colors.white70,
-          drawEndConnector: cardData.key != _timelineCardData.length - 1,
-          indicatorChild: cardData.value.fontAwesomeIcon
-              ? Padding(
-                  padding: const EdgeInsets.all(5),
-                  child: FaIcon(
-                    cardData.value.icon,
-                  ),
-                )
-              : Padding(
-                  padding: const EdgeInsets.all(5),
-                  child: Icon(
-                    cardData.value.icon,
-                  ),
-                ),
+      return VisibilityDetector(
+        key: Key(
+          cardData.key.toString(),
         ),
-        oppositeContents:
-            //if cardData is even, else null
-            cardData.key % 2 == 0
-                ? ConstrainedBox(
-                    constraints: const BoxConstraints(minWidth: 435),
-                    child: Card(
-                      color: Colors.transparent,
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              cardData.value.title,
-                              style: const TextStyle(
-                                fontFamily: 'Source Sans Pro',
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white70,
-                              ),
-                            ),
-                            const SizedBox(height: 5),
-                            Text(
-                              cardData.value.subtitle,
-                              style: const TextStyle(
-                                fontFamily: 'Source Sans Pro',
-                                fontSize: 15,
-                                color: Colors.white70,
-                              ),
-                            ),
-                            const SizedBox(height: 2.5),
-                            Text(
-                              cardData.value.date,
-                              style: const TextStyle(
-                                fontFamily: 'Source Sans Pro',
-                                fontSize: 12,
-                                color: Colors.white30,
-                              ),
-                            ),
-                          ],
-                        ),
+        onVisibilityChanged: (info) {
+          if (info.visibleFraction >= .2) {
+            setState(() {
+              cardData.value.isVisible = true;
+            });
+          }
+          // else {
+          //   setState(() {
+          //     cardData.value.isVisible = false;
+          //   });
+          // }
+        },
+        child: AnimatedOpacity(
+          opacity: cardData.value.isVisible ? 1 : 0,
+          duration: const Duration(milliseconds: 500),
+          child: TimelineTile(
+            node: TimelineNode.simple(
+              color: Colors.white70,
+              drawEndConnector: cardData.key != _timelineCardData.length - 1,
+              indicatorChild: cardData.value.fontAwesomeIcon
+                  ? Padding(
+                      padding: const EdgeInsets.all(5),
+                      child: FaIcon(
+                        cardData.value.icon,
+                      ),
+                    )
+                  : Padding(
+                      padding: const EdgeInsets.all(5),
+                      child: Icon(
+                        cardData.value.icon,
                       ),
                     ),
-                  )
-                : null,
-        contents:
-            //if cardData is odd, else null
-            cardData.key % 2 != 0
-                ? ConstrainedBox(
-                    constraints: const BoxConstraints(minWidth: 435),
-                    child: Card(
-                      color: Colors.transparent,
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              cardData.value.title,
-                              style: const TextStyle(
-                                fontFamily: 'Source Sans Pro',
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white70,
-                              ),
+            ),
+            oppositeContents:
+                //if cardData is even, else null
+                cardData.key % 2 == 0
+                    ? ConstrainedBox(
+                        constraints: const BoxConstraints(minWidth: 435),
+                        child: Card(
+                          color: Colors.transparent,
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  cardData.value.companyPosition,
+                                  style: const TextStyle(
+                                    fontFamily: 'Source Sans Pro',
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white70,
+                                  ),
+                                ),
+                                const SizedBox(height: 5),
+                                Text(
+                                  cardData.value.companyName,
+                                  style: const TextStyle(
+                                    fontFamily: 'Source Sans Pro',
+                                    fontSize: 15,
+                                    color: Colors.white70,
+                                  ),
+                                ),
+                                const SizedBox(height: 2.5),
+                                Text(
+                                  cardData.value.endDate != null
+                                      ? '${DateFormat('MMMM yyyy').format(cardData.value.startDate)} - ${DateFormat('MMMM yyyy').format(cardData.value.endDate!)}'
+                                      : '${DateFormat('MMMM yyyy').format(cardData.value.startDate)} - Present',
+                                  style: const TextStyle(
+                                    fontFamily: 'Source Sans Pro',
+                                    fontSize: 12,
+                                    color: Colors.white30,
+                                  ),
+                                ),
+                              ],
                             ),
-                            const SizedBox(height: 5),
-                            Text(
-                              cardData.value.subtitle,
-                              style: const TextStyle(
-                                fontFamily: 'Source Sans Pro',
-                                fontSize: 15,
-                                color: Colors.white70,
-                              ),
-                            ),
-                            const SizedBox(height: 2.5),
-                            Text(
-                              cardData.value.date,
-                              style: const TextStyle(
-                                fontFamily: 'Source Sans Pro',
-                                fontSize: 12,
-                                color: Colors.white30,
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
-                    ),
-                  )
-                : null,
+                      )
+                    : null,
+            contents:
+                //if cardData is odd, else null
+                cardData.key % 2 != 0
+                    ? ConstrainedBox(
+                        constraints: const BoxConstraints(minWidth: 435),
+                        child: Card(
+                          color: Colors.transparent,
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  cardData.value.companyPosition,
+                                  style: const TextStyle(
+                                    fontFamily: 'Source Sans Pro',
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white70,
+                                  ),
+                                ),
+                                const SizedBox(height: 5),
+                                Text(
+                                  cardData.value.companyName,
+                                  style: const TextStyle(
+                                    fontFamily: 'Source Sans Pro',
+                                    fontSize: 15,
+                                    color: Colors.white70,
+                                  ),
+                                ),
+                                const SizedBox(height: 2.5),
+                                Text(
+                                  cardData.value.endDate != null
+                                      ? '${DateFormat('MMMM yyyy').format(cardData.value.startDate)} - ${DateFormat('MMMM yyyy').format(cardData.value.endDate!)}'
+                                      : '${DateFormat('MMMM yyyy').format(cardData.value.startDate)} - Present',
+                                  style: const TextStyle(
+                                    fontFamily: 'Source Sans Pro',
+                                    fontSize: 12,
+                                    color: Colors.white30,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      )
+                    : null,
+          ),
+        ),
       );
     }).toList();
 
@@ -337,13 +373,10 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Center(
           child: SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.all(10),
-                  ),
                   const CircleAvatar(
                     radius: 50,
                     foregroundImage: AssetImage('images/perfil 1a1.jpeg'),
@@ -357,9 +390,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.all(10),
-                  ),
+                  const SizedBox(height: 20),
                   const Text(
                     'FLUTTER DEVELOPER',
                     style: TextStyle(
@@ -370,18 +401,14 @@ class _MyHomePageState extends State<MyHomePage> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.all(5),
-                  ),
+                  const SizedBox(height: 10),
                   const SizedBox(
                     width: 150,
                     child: Divider(
                       color: Colors.white70,
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.all(5),
-                  ),
+                  const SizedBox(height: 10),
                   LayoutBuilder(
                     builder: (context, constraints) {
                       if (size.width > 1550) {
@@ -397,9 +424,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       }
                     },
                   ),
-                  const Padding(
-                    padding: EdgeInsets.all(5),
-                  ),
+                  const SizedBox(height: 10),
                   const Text(
                     'CAREER HISTORY',
                     style: TextStyle(
@@ -410,18 +435,14 @@ class _MyHomePageState extends State<MyHomePage> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.all(5),
-                  ),
+                  const SizedBox(height: 10),
                   const SizedBox(
                     width: 150,
                     child: Divider(
                       color: Colors.white70,
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.all(5),
-                  ),
+                  const SizedBox(height: 10),
                   ...careerHistoryCards,
                 ],
               ),
