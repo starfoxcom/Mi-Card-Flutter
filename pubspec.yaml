@@ -17,6 +17,8 @@ dependencies:
   font_awesome_flutter: ^10.2.1
   url_launcher: ^6.0.18
   timelines: ^0.1.0
+  visibility_detector: ^0.3.3
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:
