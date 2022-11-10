@@ -19,6 +19,7 @@ dependencies:
   timelines: ^0.1.0
   visibility_detector: ^0.3.3
   intl: ^0.17.0
+  flutter_flip_card: ^0.0.3
 
 dev_dependencies:
   flutter_test:

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_flip_card/flutter_flip_card.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:timelines/timelines.dart';
@@ -59,6 +60,8 @@ class TimelineCardData {
 
   String companyName;
 
+  String? roleDescription;
+
   DateTime startDate;
 
   DateTime? endDate;
@@ -69,14 +72,18 @@ class TimelineCardData {
 
   bool isVisible;
 
+  bool isExpanded;
+
   TimelineCardData({
     this.companyPosition = '',
     this.companyName = '',
+    this.roleDescription,
     required this.startDate,
     this.endDate,
     this.icon = Icons.question_answer,
     this.fontAwesomeIcon = false,
     this.isVisible = true,
+    this.isExpanded = false,
   });
 }
 
@@ -114,6 +121,14 @@ class _MyHomePageState extends State<MyHomePage> {
     TimelineCardData(
       companyPosition: 'Flutter Software Developer',
       companyName: 'SmarTrader Inc.',
+      roleDescription: '- Developed multi platform applications through '
+          'Flutter Framework with BLoC state management, '
+          'tests and their corresponding code coverage.\n'
+          '- Consulted with engineering team members to '
+          'determine system loads and develop improvement '
+          'plans.\n'
+          '- Tested programs and databases to identify issues '
+          'and make necessary modifications. ',
       startDate: DateTime(2021, 11),
       icon: Icons.work,
       isVisible: false,
@@ -121,12 +136,19 @@ class _MyHomePageState extends State<MyHomePage> {
     TimelineCardData(
       companyPosition: 'Software Developer',
       companyName: 'C&C Consulting Construction Group',
+      roleDescription: '- Delivered solutions for management systems to '
+          'provide detailed digital recordkeeping capability.\n'
+          '- Evaluated project requirements and specifications '
+          'and developed software applications in '
+          'accordance to them.',
       startDate: DateTime(2021, 08),
       endDate: DateTime(2021, 11),
       icon: Icons.work,
       isVisible: false,
     ),
   ];
+
+  final flipController = FlipCardController();
 
   @override
   Widget build(BuildContext context) {
@@ -269,46 +291,75 @@ class _MyHomePageState extends State<MyHomePage> {
             oppositeContents:
                 //if cardData is even, else null
                 cardData.key % 2 == 0
-                    ? ConstrainedBox(
-                        constraints: const BoxConstraints(minWidth: 435),
-                        child: Card(
-                          color: Colors.transparent,
-                          child: Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  cardData.value.companyPosition,
-                                  style: const TextStyle(
-                                    fontFamily: 'Source Sans Pro',
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white70,
+                    ? FlipCard(
+                        controller: flipController,
+                        onTapFlipping: true,
+                        rotateSide: RotateSide.left,
+                        frontWidget: ConstrainedBox(
+                          constraints: const BoxConstraints(minWidth: 435),
+                          child: Card(
+                            color: Colors.transparent,
+                            child: Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    cardData.value.companyPosition,
+                                    style: const TextStyle(
+                                      fontFamily: 'Source Sans Pro',
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white70,
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(height: 5),
-                                Text(
-                                  cardData.value.companyName,
-                                  style: const TextStyle(
-                                    fontFamily: 'Source Sans Pro',
-                                    fontSize: 15,
-                                    color: Colors.white70,
+                                  const SizedBox(height: 5),
+                                  Text(
+                                    cardData.value.companyName,
+                                    style: const TextStyle(
+                                      fontFamily: 'Source Sans Pro',
+                                      fontSize: 15,
+                                      color: Colors.white70,
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(height: 2.5),
-                                Text(
-                                  cardData.value.endDate != null
-                                      ? '${DateFormat('MMMM yyyy').format(cardData.value.startDate)} - ${DateFormat('MMMM yyyy').format(cardData.value.endDate!)}'
-                                      : '${DateFormat('MMMM yyyy').format(cardData.value.startDate)} - Present',
-                                  style: const TextStyle(
-                                    fontFamily: 'Source Sans Pro',
-                                    fontSize: 12,
-                                    color: Colors.white30,
+                                  const SizedBox(height: 2.5),
+                                  Text(
+                                    cardData.value.endDate != null
+                                        ? '${DateFormat('MMMM yyyy').format(cardData.value.startDate)} - ${DateFormat('MMMM yyyy').format(cardData.value.endDate!)}'
+                                        : '${DateFormat('MMMM yyyy').format(cardData.value.startDate)} - Present',
+                                    style: const TextStyle(
+                                      fontFamily: 'Source Sans Pro',
+                                      fontSize: 12,
+                                      color: Colors.white30,
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        backWidget: ConstrainedBox(
+                          constraints: const BoxConstraints(minWidth: 435),
+                          child: Card(
+                            color: Colors.transparent,
+                            child: Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    cardData.value.roleDescription ??
+                                        'No description provided',
+                                    style: const TextStyle(
+                                      fontFamily: 'Source Sans Pro',
+                                      fontSize: 15,
+                                      color: Colors.white70,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -317,46 +368,75 @@ class _MyHomePageState extends State<MyHomePage> {
             contents:
                 //if cardData is odd, else null
                 cardData.key % 2 != 0
-                    ? ConstrainedBox(
-                        constraints: const BoxConstraints(minWidth: 435),
-                        child: Card(
-                          color: Colors.transparent,
-                          child: Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  cardData.value.companyPosition,
-                                  style: const TextStyle(
-                                    fontFamily: 'Source Sans Pro',
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white70,
+                    ? FlipCard(
+                        controller: flipController,
+                        onTapFlipping: true,
+                        rotateSide: RotateSide.right,
+                        frontWidget: ConstrainedBox(
+                          constraints: const BoxConstraints(minWidth: 435),
+                          child: Card(
+                            color: Colors.transparent,
+                            child: Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    cardData.value.companyPosition,
+                                    style: const TextStyle(
+                                      fontFamily: 'Source Sans Pro',
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white70,
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(height: 5),
-                                Text(
-                                  cardData.value.companyName,
-                                  style: const TextStyle(
-                                    fontFamily: 'Source Sans Pro',
-                                    fontSize: 15,
-                                    color: Colors.white70,
+                                  const SizedBox(height: 5),
+                                  Text(
+                                    cardData.value.companyName,
+                                    style: const TextStyle(
+                                      fontFamily: 'Source Sans Pro',
+                                      fontSize: 15,
+                                      color: Colors.white70,
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(height: 2.5),
-                                Text(
-                                  cardData.value.endDate != null
-                                      ? '${DateFormat('MMMM yyyy').format(cardData.value.startDate)} - ${DateFormat('MMMM yyyy').format(cardData.value.endDate!)}'
-                                      : '${DateFormat('MMMM yyyy').format(cardData.value.startDate)} - Present',
-                                  style: const TextStyle(
-                                    fontFamily: 'Source Sans Pro',
-                                    fontSize: 12,
-                                    color: Colors.white30,
+                                  const SizedBox(height: 2.5),
+                                  Text(
+                                    cardData.value.endDate != null
+                                        ? '${DateFormat('MMMM yyyy').format(cardData.value.startDate)} - ${DateFormat('MMMM yyyy').format(cardData.value.endDate!)}'
+                                        : '${DateFormat('MMMM yyyy').format(cardData.value.startDate)} - Present',
+                                    style: const TextStyle(
+                                      fontFamily: 'Source Sans Pro',
+                                      fontSize: 12,
+                                      color: Colors.white30,
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        backWidget: ConstrainedBox(
+                          constraints: const BoxConstraints(minWidth: 435),
+                          child: Card(
+                            color: Colors.transparent,
+                            child: Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    cardData.value.roleDescription ??
+                                        'No description provided',
+                                    style: const TextStyle(
+                                      fontFamily: 'Source Sans Pro',
+                                      fontSize: 15,
+                                      color: Colors.white70,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -368,7 +448,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }).toList();
 
     return Scaffold(
-      backgroundColor: Colors.black87,
+      backgroundColor: Colors.white38,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -444,6 +524,23 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   const SizedBox(height: 10),
                   ...careerHistoryCards,
+                  const SizedBox(height: 10),
+                  const SizedBox(
+                    width: 150,
+                    child: Divider(
+                      color: Colors.white70,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  const Text(
+                    'Made with ❤ with Flutter',
+                    style: TextStyle(
+                      fontFamily: 'Source Sans Pro',
+                      fontSize: 12,
+                      color: Colors.white70,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ],
               ),
             ),
