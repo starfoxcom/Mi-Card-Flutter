@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_flip_card/flutter_flip_card.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:timelines/timelines.dart';
+import 'package:timeline_tile/timeline_tile.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
@@ -72,7 +72,7 @@ class TimelineCardData {
 
   bool isVisible;
 
-  bool isExpanded;
+  bool onHover;
 
   TimelineCardData({
     this.companyPosition = '',
@@ -83,7 +83,7 @@ class TimelineCardData {
     this.icon = Icons.question_answer,
     this.fontAwesomeIcon = false,
     this.isVisible = true,
-    this.isExpanded = false,
+    this.onHover = false,
   });
 }
 
@@ -146,6 +146,22 @@ class _MyHomePageState extends State<MyHomePage> {
       icon: Icons.work,
       isVisible: false,
     ),
+    TimelineCardData(
+      companyPosition: 'Flutter Software Developer',
+      companyName: 'Green Oceans Inc.',
+      roleDescription: '- Conducted research, gathered information from '
+          'multiple sources and presented results to implement Flutter framework '
+          'as development environment of choice for future projects.\n'
+          '- Learned new skills and applied to daily tasks to improve efficiency '
+          'and productivity with Flutter framework.\n'
+          '- Increased customer satisfaction by resolving issues.\n'
+          '- Used coordination and planning skills to achieve results '
+          'according to schedule.',
+      startDate: DateTime(2021, 01),
+      endDate: DateTime(2021, 08),
+      icon: Icons.work,
+      isVisible: false,
+    ),
   ];
 
   final flipController = FlipCardController();
@@ -183,7 +199,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           offset: const Offset(0, 1),
                         ),
                       ]),
-                  duration: const Duration(milliseconds: 500),
+                  duration: const Duration(milliseconds: 250),
                   curve: Curves.easeInOut,
                   margin: EdgeInsets.zero,
                   child: Padding(
@@ -251,204 +267,412 @@ class _MyHomePageState extends State<MyHomePage> {
 
     final List<Widget> careerHistoryCards =
         _timelineCardData.asMap().entries.map((cardData) {
-      return VisibilityDetector(
-        key: Key(
-          cardData.key.toString(),
-        ),
-        onVisibilityChanged: (info) {
-          if (info.visibleFraction >= .2) {
-            setState(() {
-              cardData.value.isVisible = true;
-            });
-          }
-          // else {
-          //   setState(() {
-          //     cardData.value.isVisible = false;
-          //   });
-          // }
-        },
-        child: AnimatedOpacity(
-          opacity: cardData.value.isVisible ? 1 : 0,
-          duration: const Duration(milliseconds: 500),
-          child: TimelineTile(
-            node: TimelineNode.simple(
-              color: Colors.white70,
-              drawEndConnector: cardData.key != _timelineCardData.length - 1,
-              indicatorChild: cardData.value.fontAwesomeIcon
-                  ? Padding(
-                      padding: const EdgeInsets.all(5),
-                      child: FaIcon(
-                        cardData.value.icon,
+      return ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 750),
+        child: Column(
+          children: [
+            VisibilityDetector(
+              key: Key(
+                cardData.key.toString(),
+              ),
+              onVisibilityChanged: (info) {
+                if (info.visibleFraction >= .2) {
+                  setState(() {
+                    cardData.value.isVisible = true;
+                  });
+                }
+                // else {
+                //   setState(() {
+                //     cardData.value.isVisible = false;
+                //   });
+                // }
+              },
+              child: AnimatedOpacity(
+                opacity: cardData.value.isVisible ? 1 : 0,
+                duration: const Duration(milliseconds: 500),
+                child: TimelineTile(
+                  indicatorStyle: IndicatorStyle(
+                    width: 30,
+                    height: 30,
+                    indicator: Container(
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.grey,
                       ),
-                    )
-                  : Padding(
-                      padding: const EdgeInsets.all(5),
-                      child: Icon(
-                        cardData.value.icon,
-                      ),
+                      child: cardData.value.fontAwesomeIcon
+                          ? FaIcon(
+                              cardData.value.icon,
+                            )
+                          : Icon(
+                              cardData.value.icon,
+                            ),
                     ),
+                  ),
+                  isFirst: cardData.key == 0,
+                  isLast: cardData.key == _timelineCardData.length - 1,
+                  alignment: TimelineAlign.manual,
+                  lineXY: cardData.key % 2 == 0 ? .9 : .1,
+                  startChild: //if cardData is even, else null
+                      cardData.key % 2 == 0
+                          ? FlipCard(
+                              controller: flipController,
+                              onTapFlipping:
+                                  cardData.value.roleDescription != null,
+                              rotateSide: RotateSide.left,
+                              frontWidget: FocusableActionDetector(
+                                onShowHoverHighlight: (value) {
+                                  setState(() {
+                                    cardData.value.onHover = value;
+                                  });
+                                },
+                                child: Card(
+                                  color: Colors.transparent,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                cardData.value.companyPosition,
+                                                style: const TextStyle(
+                                                  fontFamily: 'Source Sans Pro',
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white70,
+                                                ),
+                                              ),
+                                              const SizedBox(height: 5),
+                                              Text(
+                                                cardData.value.companyName,
+                                                style: const TextStyle(
+                                                  fontFamily: 'Source Sans Pro',
+                                                  fontSize: 15,
+                                                  color: Colors.white70,
+                                                ),
+                                              ),
+                                              const SizedBox(height: 2.5),
+                                              Text(
+                                                cardData.value.endDate != null
+                                                    ? '${DateFormat('MMMM yyyy').format(cardData.value.startDate)} - ${DateFormat('MMMM yyyy').format(cardData.value.endDate!)}'
+                                                    : '${DateFormat('MMMM yyyy').format(cardData.value.startDate)} - Present',
+                                                style: const TextStyle(
+                                                  fontFamily: 'Source Sans Pro',
+                                                  fontSize: 12,
+                                                  color: Colors.white30,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        if (cardData.value.roleDescription !=
+                                            null)
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(left: 10),
+                                            child: AnimatedOpacity(
+                                              opacity: size.width > 1550
+                                                  ? cardData.value.onHover
+                                                      ? 1
+                                                      : 0
+                                                  : 1,
+                                              duration: const Duration(
+                                                  milliseconds: 250),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: const [
+                                                  Icon(
+                                                    Icons.flip_to_back,
+                                                    color: Colors.white30,
+                                                  ),
+                                                  Text(
+                                                    'Tap for\ndescription',
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                      fontFamily:
+                                                          'Source Sans Pro',
+                                                      fontSize: 12,
+                                                      color: Colors.white30,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              backWidget: FocusableActionDetector(
+                                onShowHoverHighlight: (value) {
+                                  setState(() {
+                                    cardData.value.onHover = value;
+                                  });
+                                },
+                                child: Card(
+                                  color: Colors.transparent,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                cardData.value
+                                                        .roleDescription ??
+                                                    'No description provided',
+                                                textAlign: TextAlign.justify,
+                                                style: const TextStyle(
+                                                  fontFamily: 'Source Sans Pro',
+                                                  fontSize: 15,
+                                                  color: Colors.white70,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 10),
+                                          child: AnimatedOpacity(
+                                            opacity: size.width > 1550
+                                                ? cardData.value.onHover
+                                                    ? 1
+                                                    : 0
+                                                : 1,
+                                            duration: const Duration(
+                                                milliseconds: 250),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: const [
+                                                Icon(
+                                                  Icons.flip_to_front,
+                                                  color: Colors.white30,
+                                                ),
+                                                Text(
+                                                  'Tap for\nposition',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                    fontFamily:
+                                                        'Source Sans Pro',
+                                                    fontSize: 12,
+                                                    color: Colors.white30,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                          : null,
+                  endChild: //if cardData is odd, else null
+                      cardData.key % 2 != 0
+                          ? FlipCard(
+                              controller: flipController,
+                              onTapFlipping:
+                                  cardData.value.roleDescription != null,
+                              rotateSide: RotateSide.right,
+                              frontWidget: FocusableActionDetector(
+                                onShowHoverHighlight: (value) {
+                                  setState(() {
+                                    cardData.value.onHover = value;
+                                  });
+                                },
+                                child: Card(
+                                  color: Colors.transparent,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                cardData.value.companyPosition,
+                                                style: const TextStyle(
+                                                  fontFamily: 'Source Sans Pro',
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white70,
+                                                ),
+                                              ),
+                                              const SizedBox(height: 5),
+                                              Text(
+                                                cardData.value.companyName,
+                                                style: const TextStyle(
+                                                  fontFamily: 'Source Sans Pro',
+                                                  fontSize: 15,
+                                                  color: Colors.white70,
+                                                ),
+                                              ),
+                                              const SizedBox(height: 2.5),
+                                              Text(
+                                                cardData.value.endDate != null
+                                                    ? '${DateFormat('MMMM yyyy').format(cardData.value.startDate)} - ${DateFormat('MMMM yyyy').format(cardData.value.endDate!)}'
+                                                    : '${DateFormat('MMMM yyyy').format(cardData.value.startDate)} - Present',
+                                                style: const TextStyle(
+                                                  fontFamily: 'Source Sans Pro',
+                                                  fontSize: 12,
+                                                  color: Colors.white30,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        if (cardData.value.roleDescription !=
+                                            null)
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(left: 10),
+                                            child: AnimatedOpacity(
+                                              opacity: size.width > 1550
+                                                  ? cardData.value.onHover
+                                                      ? 1
+                                                      : 0
+                                                  : 1,
+                                              duration: const Duration(
+                                                  milliseconds: 250),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: const [
+                                                  Icon(
+                                                    Icons.flip_to_back,
+                                                    color: Colors.white30,
+                                                  ),
+                                                  Text(
+                                                    'Tap for\ndescription',
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                      fontFamily:
+                                                          'Source Sans Pro',
+                                                      fontSize: 12,
+                                                      color: Colors.white30,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              backWidget: FocusableActionDetector(
+                                onShowHoverHighlight: (value) {
+                                  setState(() {
+                                    cardData.value.onHover = value;
+                                  });
+                                },
+                                child: Card(
+                                  color: Colors.transparent,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                cardData.value
+                                                        .roleDescription ??
+                                                    'No description provided',
+                                                textAlign: TextAlign.justify,
+                                                style: const TextStyle(
+                                                  fontFamily: 'Source Sans Pro',
+                                                  fontSize: 15,
+                                                  color: Colors.white70,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 10),
+                                          child: AnimatedOpacity(
+                                            opacity: size.width > 1550
+                                                ? cardData.value.onHover
+                                                    ? 1
+                                                    : 0
+                                                : 1,
+                                            duration: const Duration(
+                                                milliseconds: 250),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: const [
+                                                Icon(
+                                                  Icons.flip_to_front,
+                                                  color: Colors.white30,
+                                                ),
+                                                Text(
+                                                  'Tap for\nposition',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                    fontFamily:
+                                                        'Source Sans Pro',
+                                                    fontSize: 12,
+                                                    color: Colors.white30,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                          : null,
+                ),
+              ),
             ),
-            oppositeContents:
-                //if cardData is even, else null
-                cardData.key % 2 == 0
-                    ? FlipCard(
-                        controller: flipController,
-                        onTapFlipping: true,
-                        rotateSide: RotateSide.left,
-                        frontWidget: ConstrainedBox(
-                          constraints: const BoxConstraints(minWidth: 435),
-                          child: Card(
-                            color: Colors.transparent,
-                            child: Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    cardData.value.companyPosition,
-                                    style: const TextStyle(
-                                      fontFamily: 'Source Sans Pro',
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white70,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 5),
-                                  Text(
-                                    cardData.value.companyName,
-                                    style: const TextStyle(
-                                      fontFamily: 'Source Sans Pro',
-                                      fontSize: 15,
-                                      color: Colors.white70,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 2.5),
-                                  Text(
-                                    cardData.value.endDate != null
-                                        ? '${DateFormat('MMMM yyyy').format(cardData.value.startDate)} - ${DateFormat('MMMM yyyy').format(cardData.value.endDate!)}'
-                                        : '${DateFormat('MMMM yyyy').format(cardData.value.startDate)} - Present',
-                                    style: const TextStyle(
-                                      fontFamily: 'Source Sans Pro',
-                                      fontSize: 12,
-                                      color: Colors.white30,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        backWidget: ConstrainedBox(
-                          constraints: const BoxConstraints(minWidth: 435),
-                          child: Card(
-                            color: Colors.transparent,
-                            child: Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    cardData.value.roleDescription ??
-                                        'No description provided',
-                                    style: const TextStyle(
-                                      fontFamily: 'Source Sans Pro',
-                                      fontSize: 15,
-                                      color: Colors.white70,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      )
-                    : null,
-            contents:
-                //if cardData is odd, else null
-                cardData.key % 2 != 0
-                    ? FlipCard(
-                        controller: flipController,
-                        onTapFlipping: true,
-                        rotateSide: RotateSide.right,
-                        frontWidget: ConstrainedBox(
-                          constraints: const BoxConstraints(minWidth: 435),
-                          child: Card(
-                            color: Colors.transparent,
-                            child: Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    cardData.value.companyPosition,
-                                    style: const TextStyle(
-                                      fontFamily: 'Source Sans Pro',
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white70,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 5),
-                                  Text(
-                                    cardData.value.companyName,
-                                    style: const TextStyle(
-                                      fontFamily: 'Source Sans Pro',
-                                      fontSize: 15,
-                                      color: Colors.white70,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 2.5),
-                                  Text(
-                                    cardData.value.endDate != null
-                                        ? '${DateFormat('MMMM yyyy').format(cardData.value.startDate)} - ${DateFormat('MMMM yyyy').format(cardData.value.endDate!)}'
-                                        : '${DateFormat('MMMM yyyy').format(cardData.value.startDate)} - Present',
-                                    style: const TextStyle(
-                                      fontFamily: 'Source Sans Pro',
-                                      fontSize: 12,
-                                      color: Colors.white30,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        backWidget: ConstrainedBox(
-                          constraints: const BoxConstraints(minWidth: 435),
-                          child: Card(
-                            color: Colors.transparent,
-                            child: Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    cardData.value.roleDescription ??
-                                        'No description provided',
-                                    style: const TextStyle(
-                                      fontFamily: 'Source Sans Pro',
-                                      fontSize: 15,
-                                      color: Colors.white70,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      )
-                    : null,
-          ),
+            if (cardData.key != _timelineCardData.length - 1)
+              AnimatedOpacity(
+                  opacity: cardData.value.isVisible ? 1 : 0,
+                  duration: const Duration(milliseconds: 500),
+                  child: const TimelineDivider(
+                    begin: .1,
+                    end: .9,
+                    thickness: 4,
+                  ))
+          ],
         ),
       );
     }).toList();
 
     return Scaffold(
-      backgroundColor: Colors.white38,
+      backgroundColor: Colors.black87,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
