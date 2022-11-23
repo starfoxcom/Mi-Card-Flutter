@@ -232,7 +232,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 color: cardData.value.onHover
                                     ? Colors.black87
                                     : Colors.white70,
-                                fontFamily: 'Source Sans Pro',
+                                fontFamily: 'SourceSansPro',
                                 fontSize: 20,
                               ),
                             ),
@@ -242,7 +242,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 color: cardData.value.onHover
                                     ? Colors.black45
                                     : Colors.white30,
-                                fontFamily: 'Source Sans Pro',
+                                fontFamily: 'SourceSansPro',
                                 fontSize: 15,
                               ),
                             ),
@@ -341,7 +341,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                               Text(
                                                 cardData.value.companyPosition,
                                                 style: const TextStyle(
-                                                  fontFamily: 'Source Sans Pro',
+                                                  fontFamily: 'SourceSansPro',
                                                   fontSize: 20,
                                                   fontWeight: FontWeight.bold,
                                                   color: Colors.white70,
@@ -351,7 +351,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                               Text(
                                                 cardData.value.companyName,
                                                 style: const TextStyle(
-                                                  fontFamily: 'Source Sans Pro',
+                                                  fontFamily: 'SourceSansPro',
                                                   fontSize: 15,
                                                   color: Colors.white70,
                                                 ),
@@ -362,7 +362,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                     ? '${DateFormat('MMMM yyyy').format(cardData.value.startDate)} - ${DateFormat('MMMM yyyy').format(cardData.value.endDate!)}'
                                                     : '${DateFormat('MMMM yyyy').format(cardData.value.startDate)} - Present',
                                                 style: const TextStyle(
-                                                  fontFamily: 'Source Sans Pro',
+                                                  fontFamily: 'SourceSansPro',
                                                   fontSize: 12,
                                                   color: Colors.white30,
                                                 ),
@@ -396,7 +396,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
                                                       fontFamily:
-                                                          'Source Sans Pro',
+                                                          'SourceSansPro',
                                                       fontSize: 12,
                                                       color: Colors.white30,
                                                     ),
@@ -435,7 +435,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                     'No description provided',
                                                 textAlign: TextAlign.justify,
                                                 style: const TextStyle(
-                                                  fontFamily: 'Source Sans Pro',
+                                                  fontFamily: 'SourceSansPro',
                                                   fontSize: 15,
                                                   color: Colors.white70,
                                                 ),
@@ -466,8 +466,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                   'Tap for\nposition',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
-                                                    fontFamily:
-                                                        'Source Sans Pro',
+                                                    fontFamily: 'SourceSansPro',
                                                     fontSize: 12,
                                                     color: Colors.white30,
                                                   ),
@@ -512,7 +511,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                               Text(
                                                 cardData.value.companyPosition,
                                                 style: const TextStyle(
-                                                  fontFamily: 'Source Sans Pro',
+                                                  fontFamily: 'SourceSansPro',
                                                   fontSize: 20,
                                                   fontWeight: FontWeight.bold,
                                                   color: Colors.white70,
@@ -522,7 +521,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                               Text(
                                                 cardData.value.companyName,
                                                 style: const TextStyle(
-                                                  fontFamily: 'Source Sans Pro',
+                                                  fontFamily: 'SourceSansPro',
                                                   fontSize: 15,
                                                   color: Colors.white70,
                                                 ),
@@ -533,7 +532,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                     ? '${DateFormat('MMMM yyyy').format(cardData.value.startDate)} - ${DateFormat('MMMM yyyy').format(cardData.value.endDate!)}'
                                                     : '${DateFormat('MMMM yyyy').format(cardData.value.startDate)} - Present',
                                                 style: const TextStyle(
-                                                  fontFamily: 'Source Sans Pro',
+                                                  fontFamily: 'SourceSansPro',
                                                   fontSize: 12,
                                                   color: Colors.white30,
                                                 ),
@@ -567,7 +566,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
                                                       fontFamily:
-                                                          'Source Sans Pro',
+                                                          'SourceSansPro',
                                                       fontSize: 12,
                                                       color: Colors.white30,
                                                     ),
@@ -606,7 +605,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                     'No description provided',
                                                 textAlign: TextAlign.justify,
                                                 style: const TextStyle(
-                                                  fontFamily: 'Source Sans Pro',
+                                                  fontFamily: 'SourceSansPro',
                                                   fontSize: 15,
                                                   color: Colors.white70,
                                                 ),
@@ -637,8 +636,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                   'Tap for\nposition',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
-                                                    fontFamily:
-                                                        'Source Sans Pro',
+                                                    fontFamily: 'SourceSansPro',
                                                     fontSize: 12,
                                                     color: Colors.white30,
                                                   ),
@@ -698,7 +696,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   const Text(
                     'FLUTTER DEVELOPER',
                     style: TextStyle(
-                      fontFamily: 'Source Sans Pro',
+                      fontFamily: 'SourceSansPro',
                       fontSize: 20,
                       color: Colors.white70,
                       letterSpacing: 2.5,
@@ -732,7 +730,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   const Text(
                     'CAREER HISTORY',
                     style: TextStyle(
-                      fontFamily: 'Source Sans Pro',
+                      fontFamily: 'SourceSansPro',
                       fontSize: 20,
                       color: Colors.white70,
                       letterSpacing: 2.5,
@@ -759,7 +757,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   const Text(
                     'Made with ❤ with Flutter',
                     style: TextStyle(
-                      fontFamily: 'Source Sans Pro',
+                      fontFamily: 'SourceSansPro',
                       fontSize: 12,
                       color: Colors.white70,
                       fontWeight: FontWeight.bold,
