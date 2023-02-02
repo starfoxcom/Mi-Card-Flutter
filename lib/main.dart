@@ -119,6 +119,21 @@ class _MyHomePageState extends State<MyHomePage> {
 
   final _timelineCardData = [
     TimelineCardData(
+      companyPosition: 'Advanced App Engineering Sr Analyst',
+      companyName: 'Accenture México',
+      roleDescription: '- Design software solutions to address specific '
+          'business requirements.\n'
+          '- Develop system specifications and interfaces for complex '
+          'components.\n'
+          '- Gather and interpret user and system requirements.\n'
+          '- Lead application design delivery and communicate the vision to '
+          'application development teams.\n'
+          '- Develop and implement test plans.',
+      startDate: DateTime(2023, 01),
+      icon: Icons.work,
+      isVisible: false,
+    ),
+    TimelineCardData(
       companyPosition: 'Flutter Software Developer',
       companyName: 'SmarTrader Inc.',
       roleDescription: '- Developed multi platform applications through '
@@ -128,7 +143,7 @@ class _MyHomePageState extends State<MyHomePage> {
           'determine system loads and develop improvement '
           'plans.\n'
           '- Tested programs and databases to identify issues '
-          'and make necessary modifications. ',
+          'and make necessary modifications.',
       startDate: DateTime(2021, 11),
       icon: Icons.work,
       isVisible: false,
@@ -176,8 +191,9 @@ class _MyHomePageState extends State<MyHomePage> {
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 750),
             child: GestureDetector(
-              onTap: () => launch(cardData.value.url),
+              onTap: () => launchUrl(Uri(path: cardData.value.url)),
               child: FocusableActionDetector(
+                mouseCursor: SystemMouseCursors.click,
                 onShowHoverHighlight: (value) {
                   setState(() {
                     cardData.value.onHover = value;
