@@ -191,7 +191,7 @@ class _MyHomePageState extends State<MyHomePage> {
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 750),
             child: GestureDetector(
-              onTap: () => launchUrl(Uri(path: cardData.value.url)),
+              onTap: () => launchUrl(Uri.parse(cardData.value.url)),
               child: FocusableActionDetector(
                 mouseCursor: SystemMouseCursors.click,
                 onShowHoverHighlight: (value) {
