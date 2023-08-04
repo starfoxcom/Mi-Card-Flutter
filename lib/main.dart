@@ -399,10 +399,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                                   : 1,
                                               duration: const Duration(
                                                   milliseconds: 250),
-                                              child: Column(
+                                              child: const Column(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.center,
-                                                children: const [
+                                                children: [
                                                   Icon(
                                                     Icons.flip_to_back,
                                                     color: Colors.white30,
@@ -470,10 +470,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                                 : 1,
                                             duration: const Duration(
                                                 milliseconds: 250),
-                                            child: Column(
+                                            child: const Column(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
-                                              children: const [
+                                              children: [
                                                 Icon(
                                                   Icons.flip_to_front,
                                                   color: Colors.white30,
@@ -569,10 +569,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                                   : 1,
                                               duration: const Duration(
                                                   milliseconds: 250),
-                                              child: Column(
+                                              child: const Column(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.center,
-                                                children: const [
+                                                children: [
                                                   Icon(
                                                     Icons.flip_to_back,
                                                     color: Colors.white30,
@@ -640,10 +640,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                                 : 1,
                                             duration: const Duration(
                                                 milliseconds: 250),
-                                            child: Column(
+                                            child: const Column(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
-                                              children: const [
+                                              children: [
                                                 Icon(
                                                   Icons.flip_to_front,
                                                   color: Colors.white30,
